@@ -6,6 +6,9 @@ ul,
 ol {
 	list-style: none;
 }
+li{
+	cursor: pointer;
+}
 body{
   overflow: hidden;
 }
@@ -36,6 +39,7 @@ body{
 	height: 1.5em;
 	transition: all 0.3s;
 	margin: 0 10px;
+	cursor: pointer;
 }
 .actions svg.active {
 	fill: red;
@@ -74,15 +78,21 @@ body{
 .size {
   position: fixed;
   right: 20px;
-  top: 10px;
+  top: 20px;
 }
 .size > li{
-  margin: 20px 0;
+	margin: 10px 0;
+	padding: 10px 0;
 }
 .size > .thin{
   height: 0;
   width: 30px;
-  border-top: 3px solid black
+  border-top: 2px solid black
+}
+.size > .normal{
+  height: 0;
+  width: 30px;
+  border-top: 4px solid black
 }
 .size > .thick{
   height: 0;

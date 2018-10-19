@@ -1,10 +1,10 @@
-var yyy = document.getElementById('xxx');
-var context = yyy.getContext('2d');
+var myCanvas = document.getElementById('myCanvas');
+var context = myCanvas.getContext('2d');
 var lineWidth = 5
 
-autoSetCanvasSize(yyy)
+autoSetCanvasSize(myCanvas)
 
-listenToUser(yyy)
+listenToUser(myCanvas)
 
 
 var eraserEnabled = false
@@ -19,10 +19,10 @@ eraser.onclick = function () {
     pen.classList.remove('active')
 }
 clear.onclick = function () {
-    context.clearRect(0, 0, yyy.width, yyy.height);
+    context.clearRect(0, 0, myCanvas.width, myCanvas.height);
 }
 download.onclick = function(){
-    var url = yyy.toDataURL("image/png")
+    var url = myCanvas.toDataURL("image/png")
     var a = document.createElement('a')
     document.body.appendChild(a)
     a.href = url
@@ -65,8 +65,12 @@ blue.onclick = function(){
     red.classList.remove('active')
 }
 
+// 粗细
 thin.onclick = function(){
-    lineWidth = 5
+    lineWidth = 4
+}
+normal.onclick = function(){
+    lineWidth = 7
 }
 thick.onclick = function(){
     lineWidth = 10
@@ -100,14 +104,13 @@ function drawCircle(x, y, radius) {
 function drawLine(x1, y1, x2, y2) {
     context.beginPath();
     context.moveTo(x1, y1) // 起点
-    context.lineWidth = lineWidth
     context.lineTo(x2, y2) // 终点
-    context.stroke()
     context.closePath()
+    context.lineWidth = lineWidth
+    context.stroke()   // 该行放在closePath后面效果更好
 }
 
 function listenToUser(canvas) {
-
 
     var using = false
     var lastPoint = {
@@ -117,9 +120,9 @@ function listenToUser(canvas) {
     // 特性检测
     if (document.body.ontouchstart !== undefined) {
         // 触屏设备
-        canvas.ontouchstart = function (aaa) {
-            var x = aaa.touches[0].clientX
-            var y = aaa.touches[0].clientY
+        canvas.ontouchstart = function (e) {
+            var x = e.touches[0].clientX
+            var y = e.touches[0].clientY
             using = true
             if (eraserEnabled) {
                 context.clearRect(x - 5, y - 5, 20, 20)
@@ -130,9 +133,9 @@ function listenToUser(canvas) {
                 }
             }
         }
-        canvas.ontouchmove = function (aaa) {
-            var x = aaa.touches[0].clientX
-            var y = aaa.touches[0].clientY
+        canvas.ontouchmove = function (e) {
+            var x = e.touches[0].clientX
+            var y = e.touches[0].clientY
 
             if (!using) { return }
 
@@ -153,9 +156,9 @@ function listenToUser(canvas) {
         }
     } else {
         // 非触屏设备
-        canvas.onmousedown = function (aaa) {
-            var x = aaa.clientX
-            var y = aaa.clientY
+        canvas.onmousedown = function (e) {
+            var x = e.clientX
+            var y = e.clientY
             using = true
             if (eraserEnabled) {
                 context.clearRect(x - 5, y - 5, 20, 20)
@@ -166,9 +169,9 @@ function listenToUser(canvas) {
                 }
             }
         }
-        canvas.onmousemove = function (aaa) {
-            var x = aaa.clientX
-            var y = aaa.clientY
+        canvas.onmousemove = function (e) {
+            var x = e.clientX
+            var y = e.clientY
 
             if (!using) { return }
 
@@ -184,7 +187,7 @@ function listenToUser(canvas) {
             }
 
         }
-        canvas.onmouseup = function (aaa) {
+        canvas.onmouseup = function (e) {
             using = false
         }
     }
